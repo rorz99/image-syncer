@@ -3,16 +3,16 @@
 name: image-sync
 on:
   push:
-    branches: [ main ]
+    branches: [ rorz99-patch-1 ]
   pull_request:
-    branches: [ main ]
+    branches: [ rorz99-patch-1 ]
   schedule:
     - cron: '0 14 * * 1'
 
 env:
-  IMAGE_SYNCER_VERSION: v1.3.1
-  USERNAME: ${{ secrets.ALIYUN_USERNAME }}
-  PASSWORD: ${{ secrets.ALIYUN_PASSWORD }}
+  IMAGE_SYNCER_VERSION: v1.5.2
+  USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
 jobs:
   image-sync:
@@ -26,9 +26,9 @@ jobs:
       run: |
         wget https://github.com/AliyunContainerService/image-syncer/releases/download/${IMAGE_SYNCER_VERSION}/image-syncer-${IMAGE_SYNCER_VERSION}-linux-amd64.tar.gz
         tar -zxf image-syncer-${IMAGE_SYNCER_VERSION}-linux-amd64.tar.gz
-        
+
     - name: add sercret to file
       run: envsubst < config_source.yaml > config.yaml
 
     - name: sync images
-      run: ./image-syncer --proc=10 --config=config.yaml --arch "amd64" --os linux --retries=2
+      run: ./image-syncer --proc=10 --config=config.yaml --retries=2 --arch "amd64" --os linux
