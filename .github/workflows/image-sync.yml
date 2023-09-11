@@ -31,4 +31,4 @@ jobs:
       run: envsubst < config_source.yaml > config.yaml
 
     - name: sync images
-      run: ./image-syncer --proc=10 --config=config.yaml --retries=2
+      run: ./image-syncer --proc=10 --config=config.yaml --arch "amd64" --os linux --retries=2
