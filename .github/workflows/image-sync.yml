@@ -10,7 +10,7 @@ on:
     - cron: '0 14 * * 1'
 
 env:
-  IMAGE_SYNCER_VERSION: v1.5.2
+  IMAGE_SYNCER_VERSION: v1.4.1
   USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
