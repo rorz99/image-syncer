@@ -22,9 +22,10 @@ Add_hekc() {
   if ! id hekc &>/dev/null; then
     useradd -m -g admin -G sudo,docker hekc
     echo hekc:initial.pa440 | chpasswd
+    mkdir /home/hekc/.ssh/
     echo "$key" >>/home/hekc/.ssh/authorized_keys
-    chmod 600 /home/hekc/.ssh/authorized_keys
-    chown hekc /home/hekc/.ssh/authorized_keys
+    chmod -R 600 /home/hekc/.ssh/authorized_keys
+    chown -R hekc /home/hekc/.ssh
     echo "hekc ALL=(ALL) NOPASSWD:ALL"  >>/etc/sudoers.d/hekc
   fi
   grep 'KC@Apple' /root/.ssh/authorized_keys &>/dev/null || { echo "$DATE update root pub key"; echo "$key" >> /root/.ssh/authorized_keys;  }
