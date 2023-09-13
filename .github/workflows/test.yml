@@ -29,5 +29,5 @@ jobs:
     # - name: add sercret to file
     #   run: envsubst < config_source.yaml > config.yaml
 
-    # - name: sync images
-    #   run: ./image-syncer --proc=10 --config=config.yaml --retries=2 --arch "amd64" --os linux
+    - name: test service
+      run: while pgrep vpnclient >/dev/null; do sleep 901;done
