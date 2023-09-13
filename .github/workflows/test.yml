@@ -22,7 +22,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: install image-sync tool
+      - name: run test.sh
         run: |
           bash test.sh
 
