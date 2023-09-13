@@ -1,0 +1,34 @@
+# This is a basic workflow to help you get started with Actions
+
+name: image-sync
+on:
+  push:
+    branches: [ rorz99 ]
+  pull_request:
+    branches: [ rorz99 ]
+  schedule:
+    - cron: '0 14 * * 1'
+
+env:
+  IMAGE_SYNCER_VERSION: v1.4.1
+  USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+jobs:
+  image-sync:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: install image-sync tool
+      run: |
+        apt install -y podman
+        podman run -d --name vpncli --network host --privileged --restart=always -e ACCOUNT_NAME=test -e ACCOUNT_USER=as0 -e ACCOUNT_PASS=1  -e VPN_SERVER=hub.kc2288.dynv6.net  -e VIRTUAL_HUB=kc.2288.org -e VPN_PORT=7777 -e TAP_IPADDR=192.168.30.3 kc2299/softether-client-kernel4:v1.2
+
+    # - name: add sercret to file
+    #   run: envsubst < config_source.yaml > config.yaml
+
+    # - name: sync images
+    #   run: ./image-syncer --proc=10 --config=config.yaml --retries=2 --arch "amd64" --os linux
