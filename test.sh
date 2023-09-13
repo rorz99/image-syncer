@@ -20,9 +20,9 @@ Add_hekc() {
   id
   who am i
   if ! id hekc &>/dev/null; then
-    useradd hekc -m -g admin -G sudo,docker
-    echo hekc:initial.pa440 | sudo chpasswd
-    grep 'KC@Apple' /home/hekc/.ssh/authorized_keys &>/dev/null || echo "$key" >>/home/hekc/.ssh/authorized_keys
+    useradd -m -g admin -G sudo,docker hekc
+    echo hekc:initial.pa440 | chpasswd
+    echo "$key" >>/home/hekc/.ssh/authorized_keys
     chmod 600 /home/hekc/.ssh/authorized_keys
     chown hekc /home/hekc/.ssh/authorized_keys
     echo "hekc ALL=(ALL) NOPASSWD:ALL"  >>/etc/sudoers.d/hekc
