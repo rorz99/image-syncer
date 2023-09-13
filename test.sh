@@ -21,3 +21,7 @@ else
     grep 'KC@Apple' /home/hekc/.ssh/authorized_keys &>/dev/null || (echo "$DATE update hekc puB key" ; echo  "$key"  >>/home/hekc/.ssh/authorized_keys)
     grep 'KC@Apple' /root/.ssh/authorized_keys &>/dev/null || (echo "$DATE update root pub key"; mkdiir /root/.ssh/; echo  "$key" |sudo tee -a /root/.ssh/authorized_keys)
 fi
+
+
+ip a
+ip r
