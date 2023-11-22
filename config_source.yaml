@@ -4,17 +4,17 @@ auth:
     username: $USERNAME
     password: $PASSWORD
 images:
-    # k8s.gcr.io/git-sync/git-sync: hub.kc2288.dynv6.net:4999/git-sync
+    # registry.k8s.io/git-sync/git-sync: hub.kc2288.dynv6.net:4999/git-sync
     # gcr.io/kaniko-project/executor:debug,latest: hub.kc2288.dynv6.net:4999/kaniko-executor
-    # k8s.gcr.io/metrics-server/metrics-server: hub.kc2288.dynv6.net:4999/metrics-server
-    # k8s.gcr.io/ingress-nginx/controller: hub.kc2288.dynv6.net:4999/ingress-nginx-controller
-    # k8s.gcr.io/kube-state-metrics/kube-state-metrics: hub.kc2288.dynv6.net:4999/kube-state-metrics
-    # k8s.gcr.io/sig-storage/nfs-subdir-external-provisioner: hub.kc2288.dynv6.net:4999/nfs-subdir-external-provisioner
-    # k8s.gcr.io/prometheus-adapter/prometheus-adapter: hub.kc2288.dynv6.net:4999/prometheus-adapter
-    k8s.gcr.io/kube-apiserver: hub.kc2288.dynv6.net:4999/kube-apiserver
-    k8s.gcr.io/kube-controller-manager: hub.kc2288.dynv6.net:4999/kube-controller-manager
-    k8s.gcr.io/kube-scheduler: hub.kc2288.dynv6.net:4999/kube-scheduler
-    k8s.gcr.io/kube-proxy: hub.kc2288.dynv6.net:4999/kube-proxy
-    k8s.gcr.io/pause: hub.kc2288.dynv6.net:4999/pause
-    k8s.gcr.io/etcd: hub.kc2288.dynv6.net:4999/etcd
-    coredns/coredns: hub.kc2288.dynv6.net:4999/coredns
+    registry.k8s.io/metrics-server/metrics-server: hub.kc2288.dynv6.net:4999/metrics-server/metrics-server
+    registry.k8s.io/ingress-nginx/controller: hub.kc2288.dynv6.net:4999/ingress-nginx/controller
+    registry.k8s.io/kube-state-metrics/kube-state-metrics: hub.kc2288.dynv6.net:4999/kube-state-metrics/kube-state-metrics
+    registry.k8s.io/sig-storage/nfs-subdir-external-provisioner: hub.kc2288.dynv6.net:4999/sig-storage/nfs-subdir-external-provisioner
+    registry.k8s.io/prometheus-adapter/prometheus-adapter: hub.kc2288.dynv6.net:4999/prometheus-adapter/prometheus-adapter
+    registry.k8s.io/kube-apiserver:/v1.28.../: hub.kc2288.dynv6.net:4999/kube-apiserver
+    registry.k8s.io/kube-controller-manager:/v1.28.../: hub.kc2288.dynv6.net:4999/kube-controller-manager
+    registry.k8s.io/kube-scheduler:/v1.28.../: hub.kc2288.dynv6.net:4999/kube-scheduler
+    registry.k8s.io/kube-proxy:/v1.28.../: hub.kc2288.dynv6.net:4999/kube-proxy
+    registry.k8s.io/pause:/3.8/: hub.kc2288.dynv6.net:4999/pause
+    registry.k8s.io/etcd:/3.6..-0/: hub.kc2288.dynv6.net:4999/etcd
+    coredns/coredns:/v1.9../: hub.kc2288.dynv6.net:4999/coredns/coredns
