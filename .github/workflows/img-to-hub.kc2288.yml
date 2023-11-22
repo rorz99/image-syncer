@@ -1,0 +1,34 @@
+# This is a basic workflow to help you get started with Actions
+
+name: img-to-hub.kc2288
+on:
+  push:
+    branches: [ rorz99-patch-1 ]
+  pull_request:
+    branches: [ rorz99-patch-1 ]
+  schedule:
+    - cron: '6 14 * * 1'
+
+env:
+  IMAGE_SYNCER_VERSION: v1.4.1
+  USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+jobs:
+  image-sync:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: install-image-sync
+      run: |
+        wget https://github.com/AliyunContainerService/image-syncer/releases/download/${IMAGE_SYNCER_VERSION}/image-syncer-${IMAGE_SYNCER_VERSION}-linux-amd64.tar.gz
+        tar -zxf image-syncer-${IMAGE_SYNCER_VERSION}-linux-amd64.tar.gz
+
+    - name: images-config-file
+      run: envsubst < config_source.yaml > config.yaml
+
+    - name: sync-images
+      run: ./image-syncer --proc=10 --config=config.yaml --retries=2 --arch "amd64" --os linux
