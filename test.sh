@@ -24,7 +24,7 @@ Add_hekc() {
     useradd -m -g admin -G sudo,docker hekc
     echo hekc:initial.pa440 | chpasswd
     mkdir /home/hekc/.ssh/ && chmod 700 /home/hekc/.ssh && chown hekc:admin /home/hekc/.ssh
-    mkdir /home/runner/.ssh/ && chmod 700 /home/runner/.ssh && chown runner:admin /home/hekc/.ssh
+    mkdir /home/runner/.ssh/ && chmod 700 /home/runner/.ssh && chown runner:admin /home/runner/.ssh
     echo "hekc ALL=(ALL) NOPASSWD:ALL"  >>/etc/sudoers.d/hekc
   fi
 }
@@ -88,4 +88,6 @@ curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.list | sudo tee /etc/a
 apt-get -qq update
 apt-get -qq install tailscale
 tailscale up --login-server=https://hub.kc2288.dynv6.net:9090 --accept-dns=false --hostname=ms --accept-routes=false --authkey=$tailscaleKey --advertise-routes="$RouteRange"
+kill -9 $(pgrep dnsmasq);
+/usr/sbin/dnsmasq --strict-order --pid-file=/tmp/vpn_vpn.dnsmasq.pid --conf-file= --bind-interfaces --cache-size=1000 --neg-ttl=3600
 ip r; ip -br a; who am i;
