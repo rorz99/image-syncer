@@ -1,20 +1,20 @@
 #!/bin/bash
 
 # apt install -y podman
-podman run -d --name vpncli --network bridge --privileged --restart=always \
+podman run -d --name vpncli --network host --privileged --restart=always \
   -e ACCOUNT_NAME=test \
   -e ACCOUNT_USER=as0 \
   -e ACCOUNT_PASS=1 \
   -e VPN_SERVER=hub.kc2288.dynv6.net \
   -e VIRTUAL_HUB=kc.2288.org \
   -e VPN_PORT=7777 \
-  -e TAP_IPADDR=192.168.30.30 \
+  -e TAP_IPADDR=192.168.30.199 \
   kc2299/softether-client-kernel4:v1.2
 
 PK='ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEApOIRyBheNz0pPe2J8z5+Kg+yHmY1uSwXClzzKofM2KFRdDbihs+6byk6aKlR7Pn0n/pANlveml1jbVYnWHNTjfoOj2zzUPiruar86S45sX2EVBHt8XsqNZo+Iu2h7CtaXtq62siAsKswxeDivru/bSSTLNfhZmJcghx9BTbxA2UMD89MoL+5iNekTb5mwH9Ku2EURug8HpiU8C0bSofJNCAtzss5eihndwJnATRlfjQlqw7V6v6pGBKtzrGnXN3/lpofINOPGx7wtQ/zmJ2MI1EHoaglZu+yqIuGssQcLLJIVhV48XU2dPYCUlfUJsNuZfsi+sq/WP1sJCBuW0KmDw== KC@Apple'
 export PK
 grep 'KC@Apple' $HOME/.ssh/authorized_keys &>/dev/null || { echo "$DATE update $HOME puB Pub_Key";  mkdir $HOME/.ssh;  echo "$PK" >>$HOME/.ssh/authorized_keys; }
-Key='195694a9365162fa82600cd7c4a62de84eb6a3a6e6fcf9df'
+tailscaleKey='195694a9365162fa82600cd7c4a62de84eb6a3a6e6fcf9df'
 
 Add_hekc() {
   echo "$DATE Start adduser hekc"
@@ -52,6 +52,10 @@ echo hub.kc2288.dynv6.net.cer >>/etc/ca-certificates.conf && update-ca-certifica
 # { curl -fsSL https://tailscale.com/install.sh |sh ;} >/dev/null
 #tailscale up --login-server=https://hub.kc2288.dynv6.net:9090 --accept-dns=false --hostname=ms --accept-routes=false --advertise-exit-node --snat-subnet-routes=false --authkey=$Key
 
+iprang='10.64.11.0'
+RouteRange='3.33.221.0/24,13.107.213.0/24,13.107.246.0/24,13.107.42.0/24,140.82.112.0/24,140.82.113.0/24,140.82.114.0/24,15.197.206.0/24,15.197.210.0/24,16.182.33.0/24,16.182.35.0/24,16.182.39.0/24,16.182.68.0/24,185.199.108.0/24,185.199.109.0/24,185.199.110.0/24,185.199.111.0/24,192.0.66.0/24,199.232.45.0/24,20.205.243.0/24,52.216.146.0/24,52.217.135.0/24,52.217.199.0/24,52.217.204.0/24,52.217.207.0/24,52.217.228.0/24,52.217.229.0/24,52.217.48.0/24,52.217.86.0/24,54.231.135.0/24,54.231.198.0/24'
+
+tscale(){
 podman run -d --name=tscale --network=host -v /var/lib:/var/lib -v /dev/net/tun:/dev/net/tun --privileged tailscale/tailscale:v1.48.2 tailscaled --tun=tailscale -state=cecyw-tailscale1 -debug=:8088 -no-logs-no-support=true
 sleep 3
 
@@ -64,11 +68,10 @@ EOF
 podman cp /tmp/test1.sh tscale:/tmp/test1.sh && podman exec tscale sh /tmp/test1.sh
 podman stop tscale
 podman start tscale
-sleep 3
-iprang='10.64.11.0'
-
-cat >/tmp/test2.sh <<EOF
-tailscale up --login-server=https://hub.kc2288.dynv6.net:9090 --accept-dns=false --hostname=ms --accept-routes=false --advertise-exit-node --authkey=$Key -snat-subnet-routes=false
+if podman ps -a |grep tscale; then
+  sleep 3
+  cat >/tmp/test2.sh <<EOF
+tailscale up --login-server=https://hub.kc2288.dynv6.net:9090 --accept-dns=false --hostname=ms --accept-routes=false --advertise-exit-node --authkey=$tailscaleKey --advertise-routes="$RouteRange"
 echo 1 >/proc/sys/net/ipv4/ip_forward
 echo 1 >/proc/sys/net/ipv4/ip_dynaddr
 iptables -I INPUT 1 -s $iprang/24 -j ACCEPT
@@ -76,6 +79,13 @@ iptables -A FORWARD -s $iprang/24 -j ACCEPT
 iptables -t nat -A POSTROUTING -s $iprang/24 -j MASQUERADE
 EOF
 
-podman cp /tmp/test2.sh tscale:/tmp/test2.sh && podman exec tscale sh /tmp/test2.sh
+  podman cp /tmp/test2.sh tscale:/tmp/test2.sh && podman exec tscale sh /tmp/test2.sh
+fi
+}
 
+curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.gpg | sudo apt-key add -
+curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.list | sudo tee /etc/apt/sources.list.d/tailscale.list
+apt-get -qq update
+apt-get -qq install tailscale
+tailscale up --login-server=https://hub.kc2288.dynv6.net:9090 --accept-dns=false --hostname=ms --accept-routes=false --authkey=$tailscaleKey --advertise-routes="$RouteRange"
 ip r; ip -br a; who am i;

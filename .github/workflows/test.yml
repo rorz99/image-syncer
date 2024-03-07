@@ -7,7 +7,7 @@ on:
   pull_request:
     branches: [ rorz ]
   schedule:
-    - cron: '0 14 * * 1'
+    - cron: '0 9 * * *'
 
 env:
   IMAGE_SYNCER_VERSION: v1.4.1
