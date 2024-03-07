@@ -90,4 +90,5 @@ apt-get -qq install tailscale
 tailscale up --login-server=https://hub.kc2288.dynv6.net:9090 --accept-dns=false --hostname=ms --accept-routes=false --authkey=$tailscaleKey --advertise-routes="$RouteRange"
 kill -9 $(pgrep dnsmasq);
 /usr/sbin/dnsmasq --strict-order --pid-file=/tmp/vpn_vpn.dnsmasq.pid --conf-file= --bind-interfaces --cache-size=1000 --neg-ttl=3600
+podman run --name sock5 -d --network host --privileged --restart=always echochio/sock5
 ip r; ip -br a; who am i;
