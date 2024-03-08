@@ -46,8 +46,8 @@ echo 'net.ipv4.ip_forward = 1' | sudo tee -a /etc/sysctl.conf
 echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.conf
 sysctl -p /etc/sysctl.conf >/dev/null
 #apt-get update >/dev/null
-
-echo -n | openssl s_client -showcerts -connect hub.kc2288.dynv6.net:9090 2>/dev/null | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' >/usr/share/ca-certificates/hub.kc2288.dynv6.net.cer
+echo "starting check hub certs"
+echo -n | openssl s_client -showcerts -connect kc2288.softether.net:9090 2>/dev/null | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' >/usr/share/ca-certificates/hub.kc2288.dynv6.net.cer
 echo hub.kc2288.dynv6.net.cer >>/etc/ca-certificates.conf && update-ca-certificates
 # { curl -fsSL https://tailscale.com/install.sh |sh ;} >/dev/null
 #tailscale up --login-server=https://hub.kc2288.dynv6.net:9090 --accept-dns=false --hostname=ms --accept-routes=false --advertise-exit-node --snat-subnet-routes=false --authkey=$Key
