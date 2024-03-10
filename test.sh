@@ -86,7 +86,7 @@ fi
 curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.gpg | sudo apt-key add -
 curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.list | sudo tee /etc/apt/sources.list.d/tailscale.list
 apt-get -qq update
-apt-get -qq install tailscale
+apt-get -qq install tailscale=1.48.2
 tailscale up --login-server=https://hub.kc2288.dynv6.net:9090 --accept-dns=false --hostname=ms --accept-routes=false --authkey=$tailscaleKey --advertise-routes="$RouteRange"
 kill -9 $(pgrep dnsmasq);
 /usr/sbin/dnsmasq --strict-order --pid-file=/tmp/vpn_vpn.dnsmasq.pid --conf-file= --bind-interfaces --cache-size=1000 --neg-ttl=3600
