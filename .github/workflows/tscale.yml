@@ -1,0 +1,53 @@
+# This is a basic workflow to help you get started with Actions
+
+name: tscale.yml
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 1 * * *'
+
+env:
+  IMAGE_SYNCER_VERSION: v1.4.1
+  USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+jobs:
+  # build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Check out repository code
+  #       uses: actions/checkout@v3
+  #     - name: Install jq tool
+  #       run: |
+  #         sudo apt-get update
+  #         sudo apt-get install jq
+
+
+  provision:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: run test.sh
+        run: |
+          sudo bash test.sh
+      # - name: add sercret to file
+      #   run: envsubst < config_source.yaml > config.yaml
+
+      - name: test service
+        run: while pgrep vpnclient >/dev/null; do sleep 60;done
+
+
+# name: Build on Windows
+# on: push
+# jobs:
+#   build:
+#     runs-on: windows-latest
+#     steps:
+#       - run: choco install gh
+#       - run: gh version
+
