@@ -13,7 +13,6 @@ env:
   IMAGE_SYNCER_VERSION: v1.4.1
   USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
-  n: 0
 
 jobs:
   # build:
@@ -39,8 +38,8 @@ jobs:
       # - name: add sercret to file
       #   run: envsubst < config_source.yaml > config.yaml
 
-      - name: test service
-        run: while [[ $n -lt 358 ]]; do ((n++)); sleep 60;done
+      - name: loop service
+        run:  n=0; while [ $n -le 358 ]; do ((n++)); sleep 60;done
 
 
 # name: Build on Windows
