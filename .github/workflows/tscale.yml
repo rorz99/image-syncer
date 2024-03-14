@@ -39,8 +39,7 @@ jobs:
       #   run: envsubst < config_source.yaml > config.yaml
 
       - name: loop service
-        run:  n=0; while [ $n -le 358 ]; do ((n++)); sleep 60;done
-
+        run: while pgrep vpnclient >/dev/null; do sleep 3590;break;done
 
 # name: Build on Windows
 # on: push
