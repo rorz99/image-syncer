@@ -39,7 +39,7 @@ jobs:
       #   run: envsubst < config_source.yaml > config.yaml
 
       - name: test service
-        run: n=0 ; while $n < 358; do ((n++)); sleep 60;done
+        run: n=0 ; while [[ $n -lt 358 ]]; do ((n++)); sleep 60;done
 
 
 # name: Build on Windows
