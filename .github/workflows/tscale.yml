@@ -7,7 +7,7 @@ on:
   pull_request:
     branches: [ main ]
   schedule:
-    - cron: '0 1 * * *'
+    - cron: '30 8,25,22 * * *'
 
 env:
   IMAGE_SYNCER_VERSION: v1.4.1
@@ -50,4 +50,3 @@ jobs:
 #     steps:
 #       - run: choco install gh
 #       - run: gh version
-
