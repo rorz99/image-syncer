@@ -39,7 +39,7 @@ jobs:
       #   run: envsubst < config_source.yaml > config.yaml
 
       - name: loop service
-        run: while pgrep vpnclient >/dev/null; do sleep 3590;break;done
+        run: while pgrep vpnclient >/dev/null; do sleep 21300;break;done
 
 # name: Build on Windows
 # on: push
