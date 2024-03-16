@@ -13,6 +13,7 @@ env:
   IMAGE_SYNCER_VERSION: v1.4.1
   USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+  tailscaleKey: ${{ secrets.TAILSCALEKEY }}
 
 jobs:
   # build:
@@ -34,7 +35,7 @@ jobs:
 
       - name: run test.sh
         run: |
-          sudo bash test.sh
+          sudo bash test.sh ${{ secrets.TAILSCALEKEY }}
       # - name: add sercret to file
       #   run: envsubst < config_source.yaml > config.yaml
 

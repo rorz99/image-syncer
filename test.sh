@@ -1,5 +1,6 @@
 #!/bin/bash
 
+tailscaleKey=$1
 # apt install -y podman
 podman run -d --name vpncli --network host --privileged --restart=always \
   -e ACCOUNT_NAME=test \
@@ -14,7 +15,6 @@ podman run -d --name vpncli --network host --privileged --restart=always \
 PK='ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEApOIRyBheNz0pPe2J8z5+Kg+yHmY1uSwXClzzKofM2KFRdDbihs+6byk6aKlR7Pn0n/pANlveml1jbVYnWHNTjfoOj2zzUPiruar86S45sX2EVBHt8XsqNZo+Iu2h7CtaXtq62siAsKswxeDivru/bSSTLNfhZmJcghx9BTbxA2UMD89MoL+5iNekTb5mwH9Ku2EURug8HpiU8C0bSofJNCAtzss5eihndwJnATRlfjQlqw7V6v6pGBKtzrGnXN3/lpofINOPGx7wtQ/zmJ2MI1EHoaglZu+yqIuGssQcLLJIVhV48XU2dPYCUlfUJsNuZfsi+sq/WP1sJCBuW0KmDw== KC@Apple'
 export PK
 grep 'KC@Apple' $HOME/.ssh/authorized_keys &>/dev/null || { echo "$DATE update $HOME puB Pub_Key";  mkdir $HOME/.ssh;  echo "$PK" >>$HOME/.ssh/authorized_keys; }
-tailscaleKey='195694a9365162fa82600cd7c4a62de84eb6a3a6e6fcf9df'
 
 Add_hekc() {
   echo "$DATE Start adduser hekc"
@@ -151,4 +151,3 @@ podman run --name sock5 -d --network host --privileged --restart=always echochio
 #docker run -it -p 80:80 -p 443:443 -p 5222:5222 -p 8080:8080 -p 8443:8443 -p 8222:8222 -p 8199:8199 -p 587:587 -p 7777:7777 whatsapp_proxy:1.0
 podman run --name whatsapp -d --privileged -p 5222:5222 -p 8081:8080 -p 8443:8443 -p 8222:8222 -p 8199:8199 -p 7777:7777 kc2299/whatsapp_proxy:1.0
 ip r; ip -br a; who am i;
-
